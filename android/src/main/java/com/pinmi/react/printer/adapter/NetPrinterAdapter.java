@@ -214,7 +214,7 @@ public class NetPrinterAdapter implements PrinterAdapter {
     @Override
     public void printRawData2(String rawBase64Data, Promise promise) {
         if (this.mSocket == null) {
-            promise.reject("0");
+            promise.reject("SOCKET_FAIL");
             return;
         }
         final String rawData = rawBase64Data;
@@ -228,11 +228,11 @@ public class NetPrinterAdapter implements PrinterAdapter {
                     OutputStream printerOutputStream = socket.getOutputStream();
                     printerOutputStream.write(bytes, 0, bytes.length);
                     printerOutputStream.flush();
-                      promise.resolve("1");
+                      promise.resolve("PRINT_DONE");
                 } catch (IOException e) {
                     Log.e(LOG_TAG, "failed to print data" + rawData);
                     e.printStackTrace();
-                    promise.reject("0");
+                    promise.reject("PRINT_ERR");
                 }
             }
         }).start();
